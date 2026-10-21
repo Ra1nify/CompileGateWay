@@ -1,0 +1,100 @@
+{
+  "name": "首次构建:推送 → 构建 → 回传",
+  "description": "新项目首次运行的推荐流水线：按序执行「推送源码 → 远程构建 → 回传产物」。构建产物路径通过 {{steps.build.outputs.app}} 自动传递至回传步骤，实例化后可在 WebUI 或 CLI 一键重复触发。",
+  "variables": [
+    {
+      "name": "manifest",
+      "label": "构建类型(manifest/<名字>.json)",
+      "required": true,
+      "default": "xcode"
+    },
+    {
+      "name": "scheme",
+      "label": "Xcode Scheme",
+      "required": false,
+      "default": "App"
+    },
+    {
+      "name": "configuration",
+      "label": "构建配置",
+      "required": false,
+      "default": "Release"
+    },
+    {
+      "name": "sdk",
+      "label": "SDK",
+      "required": false,
+      "default": "iphoneos"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t-push-source",
+      "kind": "push",
+      "name": "推送源码",
+      "clean": false,
+      "keepCrlf": false
+    },
+    {
+      "id": "t-build-app",
+      "kind": "build",
+      "name": "构建 {{scheme}} ({{configuration}})",
+      "manifest": "{{manifest}}",
+      "variables": {
+        "scheme": "{{scheme}}",
+        "configuration": "{{configuration}}",
+        "sdk": "{{sdk}}"
+      },
+      "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app",
+      "artifacts": [
+        ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+      ],
+      "outputs": {
+        "app": {
+          "type": "directory",
+          "side": "remote",
+          "path": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+        }
+      }
+    },
+    {
+      "id": "t-pull-app",
+      "kind": "pull",
+      "name": "回传产物",
+      "sources": [
+        {
+          "side": "remote",
+          "path": "{{inputs.source}}"
+        }
+      ],
+      "to": {
+        "side": "host",
+        "path": "artifacts"
+      },
+      "overwrite": true,
+      "inputs": {
+        "source": {
+          "type": "path",
+          "side": "remote"
+        }
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": "push",
+      "taskId": "t-push-source"
+    },
+    {
+      "id": "build",
+      "taskId": "t-build-app"
+    },
+    {
+      "id": "pull",
+      "taskId": "t-pull-app",
+      "variables": {
+        "source": "{{steps.build.outputs.app}}"
+      }
+    }
+  ]
+}

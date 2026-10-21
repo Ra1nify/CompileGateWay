@@ -1,0 +1,46 @@
+{
+  "name": "推送 → 构建 → 打包导出",
+  "description": "推送本地源码至目标机，执行远程构建并将产物直接打包归档（支持 .zip 或 .tar.gz，用于产物历史留存归档）",
+  "variables": [
+    { "name": "manifest", "label": "构建类型", "required": true, "default": "xcode" },
+    { "name": "scheme", "label": "Scheme 名称", "required": false, "default": "App" },
+    { "name": "configuration", "label": "构建配置", "required": false, "default": "Release" },
+    { "name": "sdk", "label": "SDK", "required": false, "default": "iphoneos" },
+    { "name": "zipName", "label": "导出文件名 (.zip / .tar.gz)", "required": false, "default": "artifact.zip" }
+  ],
+  "tasks": [
+    { "id": "t-push-source", "kind": "push", "name": "推送源码" },
+    {
+      "id": "t-build-app",
+      "kind": "build",
+      "name": "构建 {{scheme}}",
+      "manifest": "{{manifest}}",
+      "variables": { "scheme": "{{scheme}}", "configuration": "{{configuration}}", "sdk": "{{sdk}}" },
+      "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app",
+      "outputs": {
+        "app": {
+          "type": "directory",
+          "side": "remote",
+          "path": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+        }
+      }
+    },
+    {
+      "id": "t-export-zip",
+      "kind": "export",
+      "name": "导出压缩包",
+      "sources": [
+        { "side": "remote", "path": "{{inputs.source}}" }
+      ],
+      "outputName": "{{zipName}}",
+      "inputs": {
+        "source": { "type": "path", "side": "remote" }
+      }
+    }
+  ],
+  "steps": [
+    { "id": "push", "taskId": "t-push-source" },
+    { "id": "build", "taskId": "t-build-app" },
+    { "id": "export", "taskId": "t-export-zip", "variables": { "source": "{{steps.build.outputs.app}}" } }
+  ]
+}

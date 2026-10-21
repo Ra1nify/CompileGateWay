@@ -1,0 +1,26 @@
+{
+  "displayName": "Flutter for Android",
+  "platform": "flutter",
+  "include": {
+    "paths": ["pubspec.yaml", "android/build.gradle"]
+  },
+  "variables": [
+    { "name": "target", "label": "Entrypoint", "required": false, "default": "lib/main.dart" }
+  ],
+  "build": {
+    "steps": [
+      {
+        "id": "pub-get",
+        "run": "flutter pub get"
+      },
+      {
+        "id": "build-apk",
+        "run": "flutter build apk --release -t {{target}}"
+      }
+    ],
+    "artifactPath": "build/app/outputs/flutter-apk/app-release.apk"
+  },
+  "cache": {
+    "paths": [".dart_tool/", "build/", "android/.gradle/"]
+  }
+}

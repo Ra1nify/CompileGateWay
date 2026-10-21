@@ -1,0 +1,21 @@
+[
+  {
+    "id": "c-sample000001",
+    "name": "macos-builder",
+    "host": "192.168.1.100",
+    "port": 22,
+    "auth": {
+      "method": "key",
+      "username": "builder",
+      "password": "",
+      "keyPath": "~/.ssh/id_ed25519",
+      "passphrase": ""
+    },
+    "tags": ["macos", "ios"],
+    "baseDir": "~/CompileGateway",
+    "baseDirResolved": "/Users/builder/CompileGateway",
+    "hostKey": "",
+    "hostKeyLine": "",
+    "hostLock": false
+  }
+]

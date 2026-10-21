@@ -1,0 +1,195 @@
+/* CLI-style window: terminal look. Log pane on top, input pane below. */
+
+:root {
+  --bg: #12131a;
+  --bg-soft: #171922;
+  --fg: #d6d8e0;
+  --dim: #6b7080;
+  --line: #23262f;
+  --accent: #6ea8fe;
+  --warn: #e3b341;
+  --error: #f2727f;
+  --ok: #6fcf97;
+  --mono: "Cascadia Mono", "Cascadia Code", Consolas, "SF Mono", Menlo,
+    "DejaVu Sans Mono", "Noto Sans Mono CJK SC", "Microsoft YaHei Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.55;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------- titlebar */
+#titlebar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  padding: 7px 12px;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+  user-select: none;
+}
+
+#titlebar .logo {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+#title {
+  color: var(--dim);
+}
+
+#chip {
+  margin-left: auto;
+  padding: 2px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dim);
+  font-family: inherit;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+#chip:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+#chip.fatal {
+  border-color: var(--error);
+  color: var(--error);
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------- log pane */
+
+/* This pane has to stay selectable and copyable (drag to select, then Ctrl+C):
+   `#log` must not set `user-select: none`, and `.time` stays selectable too --
+   a copied line is easier to line up when the timestamp comes with it. */
+#log {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 10px 12px 14px;
+  outline: none;
+}
+
+#log::-webkit-scrollbar {
+  width: 10px;
+}
+
+#log::-webkit-scrollbar-thumb {
+  background: #2d313d;
+  border-radius: 6px;
+}
+
+.line {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 1px 0;
+}
+
+.line .time {
+  flex: none;
+  color: #4a4f5e;
+  font-size: 11px;
+  padding-top: 2px;
+  /* This used to be `user-select: none`, which dropped the timestamp when copying */
+  user-select: text;
+}
+
+.line .text {
+  flex: 1 1 auto;
+  min-width: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.line.out .text {
+  color: var(--fg);
+}
+
+.line.info .text {
+  color: var(--ok);
+}
+
+.line.warn .text {
+  color: var(--warn);
+}
+
+.line.error .text {
+  color: var(--error);
+}
+
+.line.input .text {
+  color: var(--accent);
+}
+
+/* Echo of what the user typed */
+.line.input .text::before {
+  content: "cgw> ";
+  color: var(--dim);
+}
+
+/* ---------------------------------------------------------------- input pane */
+#inputbar {
+  flex: none;
+  padding: 9px 12px 7px;
+  background: var(--bg-soft);
+  border-top: 1px solid var(--line);
+}
+
+#inputbar .row {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.prompt {
+  flex: none;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+#cmd {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--fg);
+  font-family: inherit;
+  font-size: 13px;
+  caret-color: var(--accent);
+}
+
+#cmd::placeholder {
+  color: #4d5262;
+}
+
+.hint {
+  margin-top: 3px;
+  color: #4a4f5e;
+  font-size: 11px;
+}

@@ -1,0 +1,45 @@
+{
+  "name": "纯净推送 → 构建 → 回传",
+  "description": "清理远端旧目录后全量覆写推送源码，执行纯净构建并将产物拉回宿主机",
+  "variables": [
+    { "name": "manifest", "label": "构建类型", "required": true, "default": "xcode" },
+    { "name": "scheme", "label": "Scheme 名称", "required": false, "default": "App" },
+    { "name": "configuration", "label": "构建配置", "required": false, "default": "Release" },
+    { "name": "sdk", "label": "SDK", "required": false, "default": "iphoneos" }
+  ],
+  "tasks": [
+    { "id": "t-clean-push", "kind": "push", "name": "纯净推送源码", "clean": true },
+    {
+      "id": "t-build-app",
+      "kind": "build",
+      "name": "构建 {{scheme}}",
+      "manifest": "{{manifest}}",
+      "variables": { "scheme": "{{scheme}}", "configuration": "{{configuration}}", "sdk": "{{sdk}}" },
+      "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app",
+      "outputs": {
+        "app": {
+          "type": "directory",
+          "side": "remote",
+          "path": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+        }
+      }
+    },
+    {
+      "id": "t-pull-app",
+      "kind": "pull",
+      "name": "回传产物",
+      "sources": [
+        { "side": "remote", "path": "{{inputs.source}}" }
+      ],
+      "to": { "side": "host", "path": "artifacts" },
+      "inputs": {
+        "source": { "type": "path", "side": "remote" }
+      }
+    }
+  ],
+  "steps": [
+    { "id": "push", "taskId": "t-clean-push" },
+    { "id": "build", "taskId": "t-build-app" },
+    { "id": "pull", "taskId": "t-pull-app", "variables": { "source": "{{steps.build.outputs.app}}" } }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "port": 3993,
+  "listen": "lan",
+  "language": "auto",
+  "loginIntervalSeconds": 3,
+  "logRetainDays": 7,
+  "allowedRoots": [],
+  "hostLock": false,
+  "auth": {
+    "username": "admin",
+    "argon2Hash": ""
+  },
+  "mcp": {
+    "enabled": true,
+    "port": 3994,
+    "listen": "lan"
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CompileGateway</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- CLI-style window: log pane on top, input pane below -->
+    <header id="titlebar">
+      <span class="logo">&gt;_</span>
+      <span id="title">CompileGateway</span>
+      <button id="chip" type="button" title=""></button>
+    </header>
+
+    <main id="log" tabindex="-1"></main>
+
+    <footer id="inputbar">
+      <div class="row">
+        <span class="prompt" id="prompt">cgw&gt;</span>
+        <input
+          id="cmd"
+          type="text"
+          autocomplete="off"
+          autocapitalize="off"
+          autocorrect="off"
+          spellcheck="false"
+          aria-label="command"
+        />
+      </div>
+      <div id="hint" class="hint"></div>
+    </footer>
+
+    <script src="main.js"></script>
+  </body>
+</html>

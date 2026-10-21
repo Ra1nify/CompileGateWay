@@ -1,0 +1,28 @@
+{
+  "displayName": "Xcode (iOS Unsigned IPA)",
+  "platform": "xcode",
+  "include": {
+    "paths": ["*.xcodeproj"]
+  },
+  "variables": [
+    { "name": "scheme", "label": "Xcode Scheme", "required": true },
+    { "name": "configuration", "label": "Build Configuration", "required": false, "default": "Release" },
+    { "name": "sdk", "label": "SDK", "required": false, "default": "iphoneos" }
+  ],
+  "build": {
+    "steps": [
+      {
+        "id": "build",
+        "run": "xcodebuild -scheme {{scheme}} -configuration {{configuration}} -sdk {{sdk}} -derivedDataPath .cgw/derived-data {{signingExtraArgs}} build"
+      },
+      {
+        "id": "package-ipa",
+        "run": "rm -rf .cgw/ipa && mkdir -p .cgw/ipa/Payload && cp -R .cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app .cgw/ipa/Payload/ && (cd .cgw/ipa && zip -qry {{scheme}}-unsigned.ipa Payload)"
+      }
+    ],
+    "artifactPath": ".cgw/ipa/{{scheme}}-unsigned.ipa"
+  },
+  "cache": {
+    "paths": [".cgw/", "Pods/"]
+  }
+}

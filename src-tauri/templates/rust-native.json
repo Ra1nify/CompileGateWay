@@ -1,0 +1,23 @@
+{
+  "displayName": "Rust (Cargo)",
+  "platform": "rust",
+  "include": {
+    "paths": ["Cargo.toml", "src"]
+  },
+  "variables": [
+    { "name": "crateName", "label": "Binary / Library Name", "required": true },
+    { "name": "profile", "label": "Profile", "required": false, "default": "release" }
+  ],
+  "build": {
+    "steps": [
+      {
+        "id": "cargo-build",
+        "run": "cargo build --{{profile}}"
+      }
+    ],
+    "artifactPath": "target/{{profile}}/{{crateName}}"
+  },
+  "cache": {
+    "paths": ["target/"]
+  }
+}

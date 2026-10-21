@@ -1,0 +1,112 @@
+/* Global baseline for the CompileGateway WebUI.
+   Fluent UI v9 injects component styles via CSS-in-JS, so this file only holds the
+   page-level reset plus the pseudo-Mica layering. */
+
+:root {
+  /* System accent color, written by the App from /api/status.accent; falls back to deep red */
+  --cgw-accent: #7f1d1d;
+  /* Pseudo-Mica layering blur: shell is deepest -> content next -> cards are the most solid */
+  --cgw-blur-shell: 44px;
+  --cgw-blur-content: 20px;
+  --cgw-blur-surface: 7px;
+  --cgw-tint-shell: rgba(255, 255, 255, 0.045);
+  --cgw-tint-content: rgba(255, 255, 255, 0.02);
+  --cgw-tint-surface: rgba(255, 255, 255, 0.055);
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: #101014;
+  /* The font family is set by FluentProvider's webDarkTheme. */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Icons follow the text color and get no color of their own. */
+svg {
+  color: inherit;
+}
+
+/* Keyboard focus must always be visible. */
+:focus-visible {
+  outline-offset: 1px;
+}
+
+/* ------------------------------------------------------------------ pseudo-Mica
+   Real Mica samples the desktop wallpaper, which a web page cannot read. So instead we use
+   a fixed accent gradient as the "wallpaper" and let the upper layers stack on top with
+   **blur of different strengths** -- weaker blur = higher layer, which creates the depth. */
+
+.cgw-backdrop {
+  position: fixed;
+  inset: 0;
+  /* Negative z-index: below the body copy but above the body background, so no sibling
+     needs its own positioning */
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      120% 90% at 12% 6%,
+      color-mix(in srgb, var(--cgw-accent) 62%, transparent) 0%,
+      transparent 58%
+    ),
+    radial-gradient(
+      95% 85% at 88% 98%,
+      color-mix(in srgb, var(--cgw-accent) 38%, transparent) 0%,
+      transparent 60%
+    ),
+    radial-gradient(70% 60% at 55% 45%, rgba(255, 255, 255, 0.045) 0%, transparent 70%),
+    linear-gradient(165deg, #16181f 0%, #0c0d11 100%);
+}
+
+.cgw-shell-surface {
+  background-color: var(--cgw-tint-shell);
+  backdrop-filter: blur(var(--cgw-blur-shell)) saturate(155%);
+  -webkit-backdrop-filter: blur(var(--cgw-blur-shell)) saturate(155%);
+}
+
+.cgw-content-surface {
+  background-color: var(--cgw-tint-content);
+  backdrop-filter: blur(var(--cgw-blur-content)) saturate(135%);
+  -webkit-backdrop-filter: blur(var(--cgw-blur-content)) saturate(135%);
+}
+
+/* Cards / panels / popovers = the highest layer: most solid, weakest blur */
+.fui-Card,
+.fui-DialogSurface,
+.fui-MenuPopover {
+  background-color: var(--cgw-tint-surface) !important;
+  backdrop-filter: blur(var(--cgw-blur-surface)) saturate(130%);
+  -webkit-backdrop-filter: blur(var(--cgw-blur-surface)) saturate(130%);
+}
+
+/* FluentProvider lays down an opaque theme background of its own, which would cover the
+   pseudo-Mica wallpaper entirely. The background belongs to .cgw-backdrop and the layers,
+   so make this one transparent. */
+.fui-FluentProvider {
+  background-color: transparent !important;
+}
+
+/* ------------------------------------------------------------------ Portal fix
+   Fluent's Portal mount point ([data-portal-node]) fills the viewport with z-index 1000000
+   and carries a theme background. As soon as the page contains any Portal component
+   (Dropdown / Menu / Dialog), mounting it covers the whole page in flat color and swallows
+   every click. It is meant to be just a container -- this restores it to being one. */
+[data-portal-node="true"] {
+  background-color: transparent !important;
+  pointer-events: none;
+}
+
+[data-portal-node="true"] > * {
+  pointer-events: auto;
+}

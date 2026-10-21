@@ -1,0 +1,33 @@
+###cgw:os
+Linux
+###cgw:xcodebuild
+__CGW_MISSING__
+###cgw:cocoapods
+__CGW_MISSING__
+###cgw:homebrew
+__CGW_MISSING__
+###cgw:java
+__CGW_MISSING__
+###cgw:gradle
+__CGW_MISSING__
+###cgw:flutter
+/mnt/d/DevHub/flutter/bin/internal/shared.sh: line 5: $'\r': command not found
+###cgw:dart
+/mnt/d/DevHub/flutter/bin/internal/shared.sh: line 5: $'\r': command not found
+###cgw:cargo
+cargo 1.97.1 (c980f4866 2026-06-30)
+###cgw:rustc
+rustc 1.97.1 (8bab26f4f 2026-07-14)
+###cgw:rsync
+rsync  version 3.4.1  protocol version 32
+Copyright (C) 1996-2025 by Andrew Tridgell, Wayne Davison, and others.
+Web site: https://rsync.samba.org/
+Capabilities:
+    64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints,
+    socketpairs, symlinks, symtimes, hardlinks, hardlink-specials,
+###cgw:xcodebuildmcp
+__CGW_MISSING__
+###cgw:disk
+/dev/sdd        1055762868 54894604 947164792       6% /
+###cgw:xcode
+###cgw:license

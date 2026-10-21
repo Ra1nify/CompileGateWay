@@ -1,0 +1,42 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "CompileGateway",
+  "version": "0.1.0",
+  "identifier": "dev.compilegateway.shell",
+  "build": {
+    "frontendDist": "../web"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [],
+    "security": {
+      "csp": null
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "publisher": "CompileGateway",
+    "copyright": "CompileGateway",
+    "category": "DeveloperTool",
+    "shortDescription": "CompileGateway — 把源码送到目标机去构建的网关",
+    "longDescription": "CompileGateway 由一个 daemon 守护进程、一个 CLI 风格的外壳窗口和一个浏览器里的 WebUI 组成。装好之后同时得到 compilegateway(GUI 外壳)、compilegateway-daemon(headless,可跑在没有图形界面的小主机上)和 compilegateway-cli(cgw,命令行客户端);三者共用同一份核心逻辑和同一个 HTTP API。",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.ico",
+      "icons/icon.icns",
+      "icons/icon.png"
+    ],
+    "windows": {
+      "wix": {
+        "language": ["en-US", "zh-CN"]
+      },
+      "nsis": {
+        "languages": ["English", "SimpChinese"],
+        "installMode": "currentUser"
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "displayName": "Xcode (iOS)",
+  "platform": "xcode",
+  "include": {
+    "paths": ["*.xcodeproj"]
+  },
+  "variables": [
+    { "name": "scheme", "label": "Xcode Scheme", "required": true },
+    { "name": "configuration", "label": "Build Configuration", "required": false, "default": "Release" },
+    { "name": "sdk", "label": "SDK", "required": false, "default": "iphoneos" }
+  ],
+  "build": {
+    "steps": [
+      {
+        "id": "build",
+        "run": "xcodebuild -scheme {{scheme}} -configuration {{configuration}} -sdk {{sdk}} -derivedDataPath .cgw/derived-data {{signingExtraArgs}} build"
+      }
+    ],
+    "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+  },
+  "cache": {
+    "paths": [".cgw/", "Pods/"]
+  }
+}

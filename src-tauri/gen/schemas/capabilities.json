@@ -1,0 +1,1 @@
+{"default":{"identifier":"default","description":"Capability for the CLI windows: the main window plus every per-client instance window.","local":true,"windows":["main","instance-*"],"permissions":["core:default"]}}

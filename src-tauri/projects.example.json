@@ -1,0 +1,12 @@
+[
+  {
+    "id": "p-sample000001",
+    "name": "sample-project",
+    "slug": "sample-project",
+    "client": "c-sample000001",
+    "hostPath": "/home/user/projects/sample-project",
+    "manifestId": "xcode-ios",
+    "tasks": [],
+    "batches": []
+  }
+]

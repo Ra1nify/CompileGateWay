@@ -1,0 +1,42 @@
+# Rust build output
+src-tauri/target/
+
+# Frontend dependencies.
+# Note: webui/dist IS committed on purpose -- rust-embed bakes it into the binary,
+# so `cargo build` needs it present.
+webui-src/node_modules/
+
+# Node dependencies and build output for the standalone MCP bridge
+mcp/node_modules/
+mcp/dist/
+
+# Local runtime data and state (passwords, local projects, job history, logs)
+src-tauri/clients.json
+src-tauri/config.json
+src-tauri/projects.json
+src-tauri/jobs.json
+src-tauri/queued_runs.json
+src-tauri/runtime.json
+src-tauri/logs/
+src-tauri/manifest/
+src-tauri/workflows/
+
+# Local scratch and UI automation tools
+.tmp/
+.workbuddy-ai/
+_cjk_lines.txt
+tools/capture-window.ps1
+tools/send-command.ps1
+
+# IDE and editor files
+.idea/
+*.iml
+.vscode/
+
+# OS noise
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+/docs

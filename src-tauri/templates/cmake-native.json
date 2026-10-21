@@ -1,0 +1,27 @@
+{
+  "displayName": "CMake (C/C++)",
+  "platform": "cmake",
+  "include": {
+    "paths": ["CMakeLists.txt"]
+  },
+  "variables": [
+    { "name": "targetName", "label": "Target Executable/Library", "required": true },
+    { "name": "buildType", "label": "Build Type", "required": false, "default": "Release" }
+  ],
+  "build": {
+    "steps": [
+      {
+        "id": "configure",
+        "run": "mkdir -p build && cd build && cmake -DCMAKE_BUILD_TYPE={{buildType}} .."
+      },
+      {
+        "id": "build",
+        "run": "cmake --build build --config {{buildType}} -j$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 4)"
+      }
+    ],
+    "artifactPath": "build/{{targetName}}"
+  },
+  "cache": {
+    "paths": ["build/"]
+  }
+}

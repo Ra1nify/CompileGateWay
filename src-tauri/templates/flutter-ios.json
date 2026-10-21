@@ -1,0 +1,22 @@
+{
+  "displayName": "Flutter for iOS",
+  "platform": "flutter",
+  "include": {
+    "paths": ["pubspec.yaml", "ios/Runner.xcodeproj"]
+  },
+  "variables": [
+    { "name": "scheme", "label": "Xcode Scheme", "required": false, "default": "Runner" },
+    { "name": "configuration", "label": "Build Configuration", "required": false, "default": "Release" }
+  ],
+  "build": {
+    "steps": [
+      "flutter pub get",
+      "cd ios && pod install",
+      "xcodebuild -workspace ios/Runner.xcworkspace -scheme {{scheme}} -configuration {{configuration}} -sdk iphoneos -derivedDataPath .cgw/derived-data {{signingExtraArgs}} build"
+    ],
+    "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-iphoneos/{{scheme}}.app"
+  },
+  "cache": {
+    "paths": [".dart_tool/", "build/", "ios/Pods/", "ios/.symlinks/"]
+  }
+}

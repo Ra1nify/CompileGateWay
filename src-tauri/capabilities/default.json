@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "Capability for the CLI windows: the main window plus every per-client instance window.",
+  "windows": ["main", "instance-*"],
+  "permissions": ["core:default"]
+}

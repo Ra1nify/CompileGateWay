@@ -1,0 +1,25 @@
+{
+  "name": "compilegateway-webui",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "CompileGateway browser WebUI (Fluent UI React + Vite)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fluentui/react-components": "^9.54.0",
+    "@fluentui/react-icons": "^2.0.245",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}

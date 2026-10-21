@@ -1,0 +1,17 @@
+{
+  "displayName": "Gradle (Android)",
+  "platform": "gradle",
+  "include": {
+    "paths": ["gradlew", "settings.gradle.kts"]
+  },
+  "variables": [
+    { "name": "gradleTask", "label": "Gradle Task", "required": false, "default": "assembleRelease" }
+  ],
+  "build": {
+    "steps": ["chmod +x gradlew", "./gradlew {{gradleTask}}"],
+    "artifactPath": "app/build/outputs/apk/release"
+  },
+  "cache": {
+    "paths": [".gradle/", "build/", "*/build/"]
+  }
+}

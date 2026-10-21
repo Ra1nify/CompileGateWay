@@ -1,0 +1,99 @@
+{
+  "name": "构建 → 打包导出",
+  "description": "构建一步并把产物自动打包归档（支持 .zip 或 .tar.gz）保存至宿主导出目录。这是留存构建历史与版本交付的推荐做法：导出步骤严格消费构建产物，失败时熔断保护，产物按时间戳或指定版本命名归档。",
+  "variables": [
+    {
+      "name": "manifest",
+      "label": "构建类型(manifest/<名字>.json)",
+      "required": true,
+      "default": "xcode"
+    },
+    {
+      "name": "scheme",
+      "label": "Xcode Scheme",
+      "required": false,
+      "default": "App"
+    },
+    {
+      "name": "configuration",
+      "label": "构建配置",
+      "required": false,
+      "default": "Release"
+    },
+    {
+      "name": "sdk",
+      "label": "SDK",
+      "required": false,
+      "default": "iphoneos"
+    },
+    {
+      "name": "zipName",
+      "label": "导出的文件名 (.zip / .tar.gz)",
+      "required": false,
+      "default": "artifact.zip"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t-build-artifact",
+      "kind": "build",
+      "name": "构建 {{scheme}} ({{configuration}})",
+      "manifest": "{{manifest}}",
+      "variables": {
+        "scheme": "{{scheme}}",
+        "configuration": "{{configuration}}",
+        "sdk": "{{sdk}}"
+      },
+      "artifactPath": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app",
+      "artifacts": [
+        ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+      ],
+      "outputs": {
+        "app": {
+          "type": "directory",
+          "side": "remote",
+          "path": ".cgw/derived-data/Build/Products/{{configuration}}-{{sdk}}/{{scheme}}.app"
+        }
+      }
+    },
+    {
+      "id": "t-export-zip",
+      "kind": "export",
+      "name": "打包导出",
+      "sources": [
+        {
+          "side": "remote",
+          "path": "{{inputs.source}}"
+        }
+      ],
+      "outputName": "{{zipName}}",
+      "inputs": {
+        "source": {
+          "type": "path",
+          "side": "remote"
+        }
+      },
+      "outputs": {
+        "zip": {
+          "type": "file",
+          "side": "host",
+          "path": "exports/{{zipName}}",
+          "required": false
+        }
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": "build",
+      "taskId": "t-build-artifact"
+    },
+    {
+      "id": "export",
+      "taskId": "t-export-zip",
+      "variables": {
+        "source": "{{steps.build.outputs.app}}"
+      }
+    }
+  ]
+}

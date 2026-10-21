@@ -1,0 +1,89 @@
+[package]
+name = "compilegateway"
+version = "0.1.0"
+description = "CompileGateway - Cross-host build and compilation gateway"
+authors = ["CompileGateway"]
+license = "AGPL-3.0"
+repository = "https://github.com/Ra1nify/CompileGateWay"
+homepage = "https://github.com/Ra1nify/CompileGateWay"
+edition = "2021"
+# All three bins are declared explicitly below; autodiscovery is off so that
+# src/bin/daemon.rs is not picked up as a second target. `default-run` is what the
+# packaging tools read (and `cargo run` without --bin follows) to find the GUI shell.
+autobins = false
+default-run = "compilegateway"
+
+# Core logic lives in a library crate used by two binaries (design doc §2):
+#   1. compilegateway        -- the Tauri shell (CLI window + WebUI); needs `gui`
+#   2. compilegateway-daemon -- headless CLI + HTTP, no GUI toolkit
+#
+# All Tauri dependencies sit behind the `gui` feature, so a small host without
+#   cargo build --no-default-features --bin compilegateway-daemon
+# GTK/WebKit development packages can still build the daemon.
+[features]
+default = ["gui"]
+gui = ["dep:tauri", "dep:tauri-plugin-dialog", "dep:tauri-build"]
+
+[lib]
+name = "compilegateway"
+path = "src/lib.rs"
+
+[[bin]]
+name = "compilegateway"
+path = "src/main.rs"
+required-features = ["gui"]
+
+[[bin]]
+name = "compilegateway-daemon"
+path = "src/bin/daemon.rs"
+
+# CLI: a thin HTTP client for the daemon (design doc §3); no core logic, no `gui`.
+[[bin]]
+name = "compilegateway-cli"
+path = "src/bin/cli.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [], optional = true }
+
+[dependencies]
+tauri = { version = "2", features = [], optional = true }
+tauri-plugin-dialog = { version = "2.7.3", optional = true }
+axum = "0.8"
+tokio = { version = "1", features = ["rt-multi-thread", "net", "sync"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sys-locale = "0.3"
+opener = "0.8.5"
+argon2 = "0.5"
+if-addrs = "0.15.0"
+rand_core = { version = "0.6", features = ["getrandom"] }
+russh = { version = "0.63.3", default-features = false, features = ["ring", "rsa", "flate2"] }
+tar = "0.4.46"
+flate2 = "1.1.10"
+walkdir = "2.5.0"
+rust-embed = "8.12.0"
+mime_guess = "2.0.5"
+# Named in design doc §2: the manifest JSON Schema is generated from the Rust structs
+# rather than a hand-written file that drifts from the parser; `default-features` is off
+# (derive only) -- schemars is no_std-friendly and `std` only affects its own Error impl.
+schemars = { version = "1.2.2", default-features = false, features = ["derive"] }
+# The hashed hostnames in known_hosts (`|1|salt|hash`) need HMAC-SHA1 to verify.
+# Both crates are already in the dependency tree (russh's own known_hosts module uses
+hmac = "0.13"
+sha1 = "0.11"
+# them), so declaring them adds no compile time. PPK v3 MACs are HMAC-SHA256 (v2:
+# SHA1). Only tests build fixtures with it, but it must be a normal dependency because
+# `#[cfg(test)]` uses the same crate. Version aligned with hmac 0.13's digest (0.11 is
+sha2 = "0.11"
+
+[profile.release]
+opt-level = "s"
+strip = true
+
+[target.'cfg(windows)'.dependencies]
+winreg = "0.55"
+
+# already in the tree). Daily log rotation uses local time (design doc §10), so the
+# Unix build needs localtime_r. Windows does not: GetLocalTime is stable Win32 ABI.
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"
