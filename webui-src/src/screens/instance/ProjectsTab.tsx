@@ -17,24 +17,24 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  Add20Regular,
-  ArrowClockwise20Regular,
-  ArrowDownload20Regular,
-  ArrowUpload20Regular,
-  Archive20Regular,
-  Braces20Regular,
-  Clock20Regular,
-  Code20Regular,
-  Copy20Regular,
-  Delete20Regular,
-  DismissCircle20Regular,
-  DocumentText20Regular,
-  Edit20Regular,
-  FolderAdd20Regular,
-  FolderOpen20Regular,
-  Layer20Regular,
-  Play20Regular,
-} from "@fluentui/react-icons";
+  Plus,
+  RotateCw,
+  Download,
+  Upload,
+  Archive,
+  Code2,
+  Clock,
+  Code,
+  Copy,
+  Trash2,
+  XCircle,
+  FileText,
+  Pencil,
+  FolderPlus,
+  FolderOpen,
+  Layers,
+  Play,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   ApiError,
@@ -1059,7 +1059,7 @@ export function ProjectsTab({
           <Tooltip content={t("importProject")} relationship="description" withArrow>
             <Button
               appearance="subtle"
-              icon={<FolderAdd20Regular />}
+              icon={<FolderPlus className="w-4 h-4" />}
               aria-label={t("importProject")}
               disabled={busy}
               onClick={() => void importProject()}
@@ -1117,7 +1117,7 @@ export function ProjectsTab({
                   <Tooltip content={t("buildAdd")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Add20Regular />}
+                      icon={<Plus className="w-4 h-4" />}
                       aria-label={t("buildAdd")}
                       disabled={busy}
                       onClick={() => setTaskDialog({ project, task: null })}
@@ -1126,7 +1126,7 @@ export function ProjectsTab({
                   <Tooltip content={t("treeTitle")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<FolderOpen20Regular />}
+                      icon={<FolderOpen className="w-4 h-4" />}
                       aria-label={t("treeTitle")}
                       onClick={() => setTreeProject(project)}
                     />
@@ -1134,7 +1134,7 @@ export function ProjectsTab({
                   <Tooltip content={t("push")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<ArrowUpload20Regular />}
+                      icon={<Upload className="w-4 h-4" />}
                       aria-label={t("push")}
                       disabled={projectBusy}
                       onClick={() => setPendingPush(project)}
@@ -1143,7 +1143,7 @@ export function ProjectsTab({
                   <Tooltip content={t("pull")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<ArrowDownload20Regular />}
+                      icon={<Download className="w-4 h-4" />}
                       aria-label={t("pull")}
                       disabled={projectBusy}
                       onClick={() => setPendingPull(project)}
@@ -1152,7 +1152,7 @@ export function ProjectsTab({
                   <Tooltip content={t("exportTitle")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Archive20Regular />}
+                      icon={<Archive className="w-4 h-4" />}
                       aria-label={t("exportTitle")}
                       disabled={projectBusy}
                       onClick={() => setExportProject(project)}
@@ -1161,7 +1161,7 @@ export function ProjectsTab({
                   <Tooltip content={t("del")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Delete20Regular />}
+                      icon={<Trash2 className="w-4 h-4" />}
                       aria-label={t("del")}
                       style={{ color: tokens.colorPaletteRedForeground1 }}
                       onClick={() => setPendingDelete(project)}
@@ -1207,7 +1207,7 @@ export function ProjectsTab({
                       <Button
                         appearance="subtle"
                         size="small"
-                        icon={<DismissCircle20Regular />}
+                        icon={<XCircle className="w-4 h-4" />}
                         aria-label={t("jobCancel")}
                         disabled={cancelling === busyJobId}
                         onClick={() => setPendingCancel({ projectId: project.id, jobId: busyJobId })}
@@ -1231,7 +1231,7 @@ export function ProjectsTab({
                       <Button
                         appearance="subtle"
                         size="small"
-                        icon={<DocumentText20Regular />}
+                        icon={<FileText className="w-4 h-4" />}
                         onClick={() => setSelectedJob(finished)}
                       >
                         {t("jobDetails")}
@@ -1253,7 +1253,7 @@ export function ProjectsTab({
                           <Button
                             appearance="secondary"
                             size="small"
-                            icon={<ArrowClockwise20Regular />}
+                            icon={<RotateCw className="w-4 h-4" />}
                             onClick={() => void retryJob(finished)}
                           >
                             {t("jobRetryFrom", { n: finished.retryFromStep + 1 })}
@@ -1274,7 +1274,7 @@ export function ProjectsTab({
                     <Button
                       appearance="primary"
                       size="small"
-                      icon={<Add20Regular />}
+                      icon={<Plus className="w-4 h-4" />}
                       onClick={() => setTaskDialog({ project, task: null })}
                     >
                       {t("buildAdd")}
@@ -1320,7 +1320,7 @@ export function ProjectsTab({
                             <Button
                               appearance={projectBusy ? "secondary" : "primary"}
                               size="small"
-                              icon={projectBusy ? <Clock20Regular /> : <Play20Regular />}
+                              icon={projectBusy ? <Clock className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                               aria-label={projectBusy ? t("jobEnqueue") : t("buildRun")}
                               onClick={() => void (projectBusy ? enqueueTask(project, task) : runTask(project, task))}
                             />
@@ -1329,7 +1329,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Code20Regular />}
+                              icon={<Code className="w-4 h-4" />}
                               aria-label={t("buildPreview")}
                               onClick={() => void previewTask(project, task)}
                             />
@@ -1338,7 +1338,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Layer20Regular />}
+                              icon={<Layers className="w-4 h-4" />}
                               aria-label={t("batchAddTask")}
                               onClick={() => setAddToBatch({ project, task })}
                             />
@@ -1347,7 +1347,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Braces20Regular />}
+                              icon={<Code2 className="w-4 h-4" />}
                               aria-label={t("buildEditJson")}
                               onClick={() => setTaskJson({ project, task })}
                             />
@@ -1356,7 +1356,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Edit20Regular />}
+                              icon={<Pencil className="w-4 h-4" />}
                               aria-label={t("buildEdit")}
                               onClick={() => setTaskDialog({ project, task })}
                             />
@@ -1365,7 +1365,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Delete20Regular />}
+                              icon={<Trash2 className="w-4 h-4" />}
                               aria-label={t("del")}
                               style={{ color: tokens.colorPaletteRedForeground1 }}
                               onClick={() => setPendingTaskDelete({ project, task })}
@@ -1386,7 +1386,7 @@ export function ProjectsTab({
                     <Button
                       appearance="secondary"
                       size="small"
-                      icon={<Add20Regular />}
+                      icon={<Plus className="w-4 h-4" />}
                       onClick={() => setBatchDialog({ project, batch: null })}
                     >
                       {t("batchAdd")}
@@ -1419,7 +1419,7 @@ export function ProjectsTab({
                             <Button
                               appearance={projectBusy ? "secondary" : "primary"}
                               size="small"
-                              icon={projectBusy ? <Clock20Regular /> : <Play20Regular />}
+                              icon={projectBusy ? <Clock className="w-4 h-4" /> : <Play className="w-4 h-4" />}
                               aria-label={projectBusy ? t("jobEnqueue") : t("batchRun")}
                               onClick={() => void (projectBusy ? enqueueBatch(project, batch) : runBatch(project, batch))}
                             />
@@ -1428,7 +1428,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Edit20Regular />}
+                              icon={<Pencil className="w-4 h-4" />}
                               aria-label={t("batchEdit")}
                               onClick={() => setBatchDialog({ project, batch })}
                             />
@@ -1437,7 +1437,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Braces20Regular />}
+                              icon={<Code2 className="w-4 h-4" />}
                               aria-label={t("batchEditJson")}
                               onClick={() => setBatchJson({ project, batch })}
                             />
@@ -1446,7 +1446,7 @@ export function ProjectsTab({
                             <Button
                               appearance="subtle"
                               size="small"
-                              icon={<Delete20Regular />}
+                              icon={<Trash2 className="w-4 h-4" />}
                               aria-label={t("del")}
                               style={{ color: tokens.colorPaletteRedForeground1 }}
                               onClick={() => setPendingBatchDelete({ project, batch })}
@@ -1458,7 +1458,7 @@ export function ProjectsTab({
                     <Button
                       appearance="secondary"
                       size="small"
-                      icon={<Add20Regular />}
+                      icon={<Plus className="w-4 h-4" />}
                       onClick={() => setBatchDialog({ project, batch: null })}
                     >
                       {t("batchAdd")}
@@ -1479,7 +1479,7 @@ export function ProjectsTab({
               <Button
                 appearance="subtle"
                 size="small"
-                icon={<Delete20Regular />}
+                icon={<Trash2 className="w-4 h-4" />}
                 onClick={() => setClearJobsConfirm(true)}
               >
                 {t("jobsClear")}
@@ -1517,7 +1517,7 @@ export function ProjectsTab({
                   <Button
                     appearance="subtle"
                     size="small"
-                    icon={<ArrowClockwise20Regular />}
+                    icon={<RotateCw className="w-4 h-4" />}
                     aria-label={t("jobRetry")}
                     disabled={job.state === "running"}
                     onClick={(e) => {
@@ -1531,7 +1531,7 @@ export function ProjectsTab({
                 <Button
                   appearance="subtle"
                   size="small"
-                  icon={<DocumentText20Regular />}
+                  icon={<FileText className="w-4 h-4" />}
                   aria-label={t("jobDetails")}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -1783,7 +1783,7 @@ export function ProjectsTab({
             <DialogActions>
               <Button
                 appearance="secondary"
-                icon={<Copy20Regular />}
+                icon={<Copy className="w-4 h-4" />}
                 onClick={() => void copyCommand()}
               >
                 {copied ? t("copied") : t("copy")}

@@ -20,15 +20,15 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  Add20Regular,
-  ArrowClockwise20Regular,
-  Copy20Regular,
-  DismissCircle20Regular,
-  Document20Regular,
-  Folder20Regular,
-  FolderOpen20Regular,
-  Link20Regular,
-} from "@fluentui/react-icons";
+  Plus,
+  RotateCw,
+  Copy,
+  XCircle,
+  File,
+  Folder,
+  FolderOpen,
+  Link,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -67,7 +67,8 @@ const useStyles = makeStyles({
   },
   surface: {
     maxWidth: "820px",
-    width: "820px",
+    width: "min(820px, 94vw)",
+    boxSizing: "border-box",
   },
   body: {
     display: "flex",
@@ -275,12 +276,12 @@ export function TreeDialog({
 
   function iconOf(entry: TreeEntry): JSX.Element {
     if (entry.kind === "dir") {
-      return <Folder20Regular />;
+      return <Folder className="w-4 h-4 text-sky-400" />;
     }
     if (entry.kind === "symlink") {
-      return <Link20Regular />;
+      return <Link className="w-4 h-4 text-violet-400" />;
     }
-    return <Document20Regular />;
+    return <File className="w-4 h-4 text-zinc-400" />;
   }
 
   const segments = listing?.path ? listing.path.split("/") : [];
@@ -317,7 +318,7 @@ export function TreeDialog({
               <Button
                 appearance="subtle"
                 size="small"
-                icon={<FolderOpen20Regular />}
+                icon={<FolderOpen className="w-4 h-4" />}
                 disabled={listing?.parent === null || listing === null}
                 onClick={() => setPath(listing?.parent ?? "")}
               >
@@ -414,7 +415,7 @@ export function TreeDialog({
                     <Button
                       appearance="subtle"
                       size="small"
-                      icon={<Copy20Regular />}
+                      icon={<Copy className="w-4 h-4" />}
                       aria-label={t("treeCopyPath")}
                       onClick={() => void copyPath(entry)}
                     />
@@ -441,7 +442,7 @@ export function TreeDialog({
                   <Button
                     appearance="subtle"
                     size="small"
-                    icon={<DismissCircle20Regular />}
+                    icon={<XCircle className="w-4 h-4" />}
                     aria-label={t("close")}
                     onClick={() => setPreview(null)}
                   />
@@ -462,7 +463,7 @@ export function TreeDialog({
           <DialogActions>
             <Button
               appearance="subtle"
-              icon={<ArrowClockwise20Regular />}
+              icon={<RotateCw className="w-4 h-4" />}
               aria-label={t("refresh")}
               onClick={() => setNonce((current) => current + 1)}
             />
@@ -470,7 +471,7 @@ export function TreeDialog({
               <Tooltip content={t("treeNewTaskHint")} relationship="description" withArrow>
                 <Button
                   appearance="secondary"
-                  icon={<Add20Regular />}
+                  icon={<Plus className="w-4 h-4" />}
                   onClick={() => {
                     onCreateTask(side, listing?.path ?? "");
                     onClose();

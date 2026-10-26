@@ -1,58 +1,19 @@
 import type { JSX } from "react";
 import {
   Button,
-  Card,
   Field,
   Input,
   MessageBar,
   MessageBarBody,
   Spinner,
-  makeStyles,
-  tokens,
 } from "@fluentui/react-components";
-import { LockClosedRegular, PersonRegular } from "@fluentui/react-icons";
+import { Lock, Terminal, User } from "lucide-react";
 import { useState } from "react";
 import { ApiError, apiLogin, type Status } from "../api";
 import { makeT } from "../i18n/strings";
 
-const useStyles = makeStyles({
-  screen: {
-    display: "grid",
-    placeItems: "center",
-    minHeight: "100vh",
-    padding: "24px",
-  },
-  card: {
-    width: "min(92vw, 360px)",
-    display: "flex",
-    flexDirection: "column",
-    rowGap: "14px",
-    padding: "26px 26px 22px",
-  },
-  brand: {
-    display: "flex",
-    alignItems: "center",
-    columnGap: "8px",
-    fontWeight: tokens.fontWeightSemibold,
-    fontSize: tokens.fontSizeBase400,
-  },
-  logo: {
-    fontFamily: tokens.fontFamilyMonospace,
-    color: tokens.colorBrandForeground1,
-    fontWeight: tokens.fontWeightBold,
-  },
-  title: {
-    margin: 0,
-    fontSize: tokens.fontSizeBase400,
-    color: tokens.colorNeutralForeground2,
-  },
-  submit: {
-    justifyContent: "center",
-  },
-});
-
 /**
- * Login gate: only this screen shows while status.auth.required && !status.client.authenticated.
+ * Login gate: modern developer console authentication screen.
  */
 export function LoginPage({
   status,
@@ -61,7 +22,6 @@ export function LoginPage({
   status: Status;
   onAuthenticated: () => Promise<void> | void;
 }): JSX.Element {
-  const styles = useStyles();
   const t = makeT(status.language);
   const [username, setUsername] = useState(status.auth.username);
   const [password, setPassword] = useState("");
@@ -88,13 +48,17 @@ export function LoginPage({
   }
 
   return (
-    <div className={styles.screen}>
-      <Card className={styles.card}>
-        <div className={styles.brand}>
-          <span className={styles.logo}>&gt;_</span>
-          <span>{status.app}</span>
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-sm bg-card border border-border rounded-2xl p-6 sm:p-8 shadow-xl flex flex-col gap-5">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary shadow-inner">
+            <Terminal className="w-5 h-5" />
+          </div>
+          <div>
+            <h1 className="text-base font-bold text-text tracking-tight">{status.app}</h1>
+            <p className="text-xs text-text-muted">{t("signIn")}</p>
+          </div>
         </div>
-        <h1 className={styles.title}>{t("signIn")}</h1>
 
         {error ? (
           <MessageBar intent="error">
@@ -107,7 +71,7 @@ export function LoginPage({
             value={username}
             autoComplete="username"
             autoFocus
-            contentBefore={<PersonRegular />}
+            contentBefore={<User className="w-4 h-4 text-text-muted" />}
             onChange={(_, data) => setUsername(data.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -123,7 +87,7 @@ export function LoginPage({
             type="password"
             value={password}
             autoComplete="current-password"
-            contentBefore={<LockClosedRegular />}
+            contentBefore={<Lock className="w-4 h-4 text-text-muted" />}
             onChange={(_, data) => setPassword(data.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
@@ -135,7 +99,7 @@ export function LoginPage({
         </Field>
 
         <Button
-          className={styles.submit}
+          style={{ width: "100%", justifyContent: "center", marginTop: "4px" }}
           appearance="primary"
           disabled={busy}
           icon={busy ? <Spinner size="tiny" /> : undefined}
@@ -143,7 +107,7 @@ export function LoginPage({
         >
           {t("ok")}
         </Button>
-      </Card>
+      </div>
     </div>
   );
 }

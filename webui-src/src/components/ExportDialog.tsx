@@ -17,7 +17,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { ArrowDownload20Regular, DocumentArrowDown20Regular } from "@fluentui/react-icons";
+import { Download, FileDown } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -191,7 +191,7 @@ export function ExportDialog({
                         size="small"
                         href={exportDownloadUrl(project.id, item.name)}
                         download={item.name}
-                        icon={<ArrowDownload20Regular />}
+                        icon={<Download className="w-4 h-4" />}
                         aria-label={`${t("exportDownload")} ${item.name}`}
                       />
                     </div>
@@ -275,7 +275,7 @@ export function ExportDialog({
             </Button>
             <Button
               appearance="primary"
-              icon={<DocumentArrowDown20Regular />}
+              icon={<FileDown className="w-4 h-4" />}
               disabled={path.trim().length === 0}
               onClick={() => {
                 setError(null);

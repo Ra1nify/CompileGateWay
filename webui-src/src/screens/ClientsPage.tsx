@@ -17,13 +17,13 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  Add16Regular,
-  Checkmark16Regular,
-  Delete20Regular,
-  Edit20Regular,
-  FolderOpen20Regular,
-  Copy20Regular,
-} from "@fluentui/react-icons";
+  Plus,
+  Check,
+  Trash2,
+  Pencil,
+  FolderOpen,
+  Copy,
+} from "lucide-react";
 import { useRef, useState } from "react";
 import {
   ApiError,
@@ -345,7 +345,7 @@ export function ClientsPage({
       <Tooltip content={t("addClient")} relationship="description" withArrow>
         <Button
           appearance="subtle"
-          icon={<Add16Regular />}
+          icon={<Plus className="w-4 h-4" />}
           aria-label={t("addClient")}
           onClick={() => setDraft((current) => [...current, newDraft()])}
         />
@@ -361,7 +361,7 @@ export function ClientsPage({
       <Tooltip content={t("done")} relationship="description" withArrow>
         <Button
           appearance="primary"
-          icon={<Checkmark16Regular />}
+          icon={<Check className="w-4 h-4" />}
           aria-label={t("done")}
           disabled={busy}
           onClick={() => void saveAll()}
@@ -373,7 +373,7 @@ export function ClientsPage({
       <Tooltip content={t("addClient")} relationship="description" withArrow>
         <Button
           appearance="primary"
-          icon={<Add16Regular />}
+          icon={<Plus className="w-4 h-4" />}
           aria-label={t("addClient")}
           onClick={() => {
             startEdit();
@@ -394,7 +394,7 @@ export function ClientsPage({
       <Tooltip content={t("edit")} relationship="description" withArrow>
         <Button
           appearance="secondary"
-          icon={<Edit20Regular />}
+          icon={<Pencil className="w-4 h-4" />}
           aria-label={t("edit")}
           onClick={startEdit}
         />
@@ -443,7 +443,7 @@ export function ClientsPage({
                   <Button
                     appearance="subtle"
                     size="small"
-                    icon={<Copy20Regular />}
+                    icon={<Copy className="w-4 h-4" />}
                     onClick={() => {
                       void navigator.clipboard.writeText(cmd);
                       setCopiedCmd(true);
@@ -465,7 +465,7 @@ export function ClientsPage({
             <p className={styles.empty}>{t("emptyClients")}</p>
             <Button
               appearance="primary"
-              icon={<Add16Regular />}
+              icon={<Plus className="w-4 h-4" />}
               style={{ marginTop: "12px" }}
               onClick={() => {
                 startEdit();
@@ -710,7 +710,7 @@ function DraftCard({
               <Tooltip content={t("chooseKey")} relationship="description" withArrow>
                 <Button
                   appearance="subtle"
-                  icon={<FolderOpen20Regular />}
+                  icon={<FolderOpen className="w-4 h-4" />}
                   aria-label={t("chooseKey")}
                   onClick={() => void onPickKey(index)}
                 />
@@ -775,7 +775,7 @@ function DraftCard({
         <Tooltip content={t("del")} relationship="description" withArrow>
           <Button
             appearance="subtle"
-            icon={<Delete20Regular />}
+            icon={<Trash2 className="w-4 h-4" />}
             aria-label={t("del")}
             style={{ color: tokens.colorPaletteRedForeground1 }}
             onClick={onRequestDelete}

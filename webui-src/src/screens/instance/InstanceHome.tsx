@@ -11,7 +11,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { ArrowSync20Regular, Delete20Regular, DocumentArrowDown20Regular, DocumentArrowUp20Regular } from "@fluentui/react-icons";
+import { RotateCw, Trash2, FileDown, FileUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -186,7 +186,7 @@ export function InstanceHome({
             <Tooltip content={t("baseDirSave")} relationship="description" withArrow>
               <Button
                 appearance="primary"
-                icon={busy ? <Spinner size="tiny" /> : <ArrowSync20Regular />}
+                icon={busy ? <Spinner size="tiny" /> : <RotateCw className="w-4 h-4" />}
                 aria-label={t("baseDirSave")}
                 disabled={busy}
                 onClick={() => void saveBaseDir()}
@@ -221,7 +221,7 @@ export function InstanceHome({
             <Tooltip content={t("hostKeyForget")} relationship="description" withArrow>
               <Button
                 appearance="subtle"
-                icon={<Delete20Regular />}
+                icon={<Trash2 className="w-4 h-4" />}
                 aria-label={t("hostKeyForget")}
                 disabled={!hostKey}
                 onClick={() => void forgetHostKey()}
@@ -235,7 +235,7 @@ export function InstanceHome({
           <Tooltip content={t("knownHostsImportHint")} relationship="description" withArrow>
             <Button
               appearance="secondary"
-              icon={busy ? <Spinner size="tiny" /> : <DocumentArrowUp20Regular />}
+              icon={busy ? <Spinner size="tiny" /> : <FileUp className="w-4 h-4" />}
               disabled={busy}
               onClick={() => void importKnownHosts()}
             >
@@ -245,7 +245,7 @@ export function InstanceHome({
           <Tooltip content={t("knownHostsExportHint")} relationship="description" withArrow>
             <Button
               appearance="secondary"
-              icon={<DocumentArrowDown20Regular />}
+              icon={<FileDown className="w-4 h-4" />}
               disabled={!hostKey}
               onClick={() => void exportKnownHosts()}
             >

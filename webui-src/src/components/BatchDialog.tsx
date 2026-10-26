@@ -17,7 +17,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { Add20Regular, ArrowDown20Regular, ArrowUp20Regular, Delete20Regular } from "@fluentui/react-icons";
+import { Plus, ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import { ApiError, apiSaveBatch, type Batch, type Project, type Status, type Task } from "../api";
 import { makeT } from "../i18n/strings";
@@ -30,7 +30,8 @@ const useStyles = makeStyles({
   },
   surface: {
     maxWidth: "680px",
-    width: "680px",
+    width: "min(680px, 94vw)",
+    boxSizing: "border-box",
   },
   grid: {
     display: "flex",
@@ -204,7 +205,7 @@ export function BatchDialog({
                     <Button
                       appearance="subtle"
                       size="small"
-                      icon={<ArrowUp20Regular />}
+                      icon={<ArrowUp className="w-3.5 h-3.5" />}
                       aria-label={t("moveUp")}
                       disabled={index === 0}
                       onClick={() => move(index, -1)}
@@ -212,7 +213,7 @@ export function BatchDialog({
                     <Button
                       appearance="subtle"
                       size="small"
-                      icon={<ArrowDown20Regular />}
+                      icon={<ArrowDown className="w-3.5 h-3.5" />}
                       aria-label={t("moveDown")}
                       disabled={index === steps.length - 1}
                       onClick={() => move(index, 1)}
@@ -220,7 +221,7 @@ export function BatchDialog({
                     <Button
                       appearance="subtle"
                       size="small"
-                      icon={<Delete20Regular />}
+                      icon={<Trash2 className="w-3.5 h-3.5" />}
                       aria-label={t("del")}
                       style={{ color: tokens.colorPaletteRedForeground1 }}
                       onClick={() =>
@@ -252,7 +253,7 @@ export function BatchDialog({
                 <Button
                   appearance="secondary"
                   size="small"
-                  icon={<Add20Regular />}
+                  icon={<Plus className="w-4 h-4" />}
                   disabled={unused.length === 0}
                   onClick={() => {
                     if (unused[0]) {
@@ -394,7 +395,7 @@ export function AddToBatchDialog({
                 <Button
                   className={styles.input}
                   appearance="primary"
-                  icon={<Add20Regular />}
+                  icon={<Plus className="w-4 h-4" />}
                   disabled={busy}
                   onClick={() => void createNew()}
                 >

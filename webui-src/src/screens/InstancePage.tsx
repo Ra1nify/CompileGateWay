@@ -3,16 +3,9 @@ import {
   Button,
   MessageBar,
   MessageBarBody,
-  Tab,
-  TabList,
   Tooltip,
-  makeStyles,
-  tokens,
 } from "@fluentui/react-components";
-import {
-  ArrowLeft20Regular,
-  PlugConnected20Regular,
-} from "@fluentui/react-icons";
+import { ArrowLeft, Zap } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -34,43 +27,6 @@ import { LogsTab } from "./instance/LogsTab";
 
 export type InstanceTab = "status" | "projects" | "env" | "logs";
 
-const useStyles = makeStyles({
-  screen: {
-    maxWidth: "1080px",
-  },
-  strip: {
-    display: "flex",
-    flexWrap: "wrap",
-    columnGap: "6px",
-    rowGap: "6px",
-    margin: "0 0 16px",
-    paddingBottom: "12px",
-    borderBottom: `1px solid ${tokens.colorNeutralStroke2}`,
-  },
-  stripButton: {
-    whiteSpace: "nowrap",
-  },
-  subnav: {
-    marginBottom: "16px",
-  },
-  meta: {
-    margin: "2px 0 0",
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorNeutralForeground3,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  emptyClients: {
-    fontSize: tokens.fontSizeBase300,
-    color: tokens.colorNeutralForeground3,
-  },
-});
-
-/**
- * Instance view: a client strip on top (switch machines without going back to the list),
- * below it the status / projects / logs tabs.
- */
 export function InstancePage({
   client,
   clients,
@@ -95,7 +51,6 @@ export function InstancePage({
   onBack: () => void;
   onReload: () => Promise<void>;
 }): JSX.Element {
-  const styles = useStyles();
   const t = makeT(status.language);
   const [testing, setTesting] = useState(false);
   /** On a fingerprint mismatch during test connection, show both fingerprints and let the user decide. */
@@ -164,27 +119,31 @@ export function InstancePage({
   }
 
   return (
-    <div className={styles.screen}>
-      <div className={styles.strip} aria-label={t("clientsTitle")}>
-        {clients.map((item) => (
-          <Button
-            key={item.id}
-            className={styles.stripButton}
-            appearance={item.id === client.id ? "primary" : "subtle"}
-            size="small"
-            shape="circular"
-            aria-current={item.id === client.id}
-            onClick={() => onSelectClient(item.id)}
-          >
-            {item.name || item.host}
-          </Button>
-        ))}
+    <div className="w-full max-w-5xl">
+      {/* Horizontal Client Machine Switcher Strip */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-3 mb-4 border-b border-border/80 scrollbar-none" aria-label={t("clientsTitle")}>
+        {clients.map((item) => {
+          const active = item.id === client.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => onSelectClient(item.id)}
+              className={`px-3 py-1 text-xs font-medium rounded-full transition-all shrink-0 ${
+                active
+                  ? "bg-primary text-white shadow-sm"
+                  : "bg-card border border-border text-text-secondary hover:text-text hover:bg-cardHover"
+              }`}
+            >
+              {item.name || item.host}
+            </button>
+          );
+        })}
       </div>
 
       <PageHead
         title={client.name}
         subtitle={
-          <span className={styles.meta}>
+          <span className="text-xs text-text-muted font-mono">
             {client.host}:{client.port} · {authText}
           </span>
         }
@@ -193,7 +152,7 @@ export function InstancePage({
             <Tooltip content={testing ? t("testing") : t("test")} relationship="description" withArrow>
               <Button
                 appearance="subtle"
-                icon={<PlugConnected20Regular />}
+                icon={<Zap className="w-4 h-4 text-amber-400" />}
                 aria-label={t("test")}
                 disabled={testing}
                 onClick={() => void runTest()}
@@ -202,7 +161,7 @@ export function InstancePage({
             <Tooltip content={t("back")} relationship="description" withArrow>
               <Button
                 appearance="subtle"
-                icon={<ArrowLeft20Regular />}
+                icon={<ArrowLeft className="w-4 h-4" />}
                 aria-label={t("back")}
                 onClick={onBack}
               />
@@ -211,16 +170,30 @@ export function InstancePage({
         }
       />
 
-      <TabList
-        className={styles.subnav}
-        selectedValue={tab}
-        onTabSelect={(_, data) => onSelectTab(data.value as InstanceTab)}
-      >
-        <Tab value="status">{t("tabStatus")}</Tab>
-        <Tab value="projects">{t("tabProjects")}</Tab>
-        <Tab value="env">{t("tabEnv")}</Tab>
-        <Tab value="logs">{t("tabLogs")}</Tab>
-      </TabList>
+      {/* Segmented Control Subnav */}
+      <div className="inline-flex p-1 bg-surface border border-border rounded-lg gap-1 mb-6 max-w-full overflow-x-auto">
+        {[
+          { id: "status", label: t("tabStatus") },
+          { id: "projects", label: t("tabProjects") },
+          { id: "env", label: t("tabEnv") },
+          { id: "logs", label: t("tabLogs") },
+        ].map((tabItem) => {
+          const active = tab === tabItem.id;
+          return (
+            <button
+              key={tabItem.id}
+              onClick={() => onSelectTab(tabItem.id as InstanceTab)}
+              className={`px-3.5 py-1.5 text-xs font-medium rounded-md transition-all whitespace-nowrap ${
+                active
+                  ? "bg-card text-text border border-border/80 shadow-sm"
+                  : "text-text-muted hover:text-text hover:bg-card/50"
+              }`}
+            >
+              {tabItem.label}
+            </button>
+          );
+        })}
+      </div>
 
       {testBanner ? (
         <MessageBar

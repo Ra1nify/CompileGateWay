@@ -13,10 +13,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import {
-  ArrowClockwise20Regular,
-  Copy20Regular,
-} from "@fluentui/react-icons";
+import { RotateCw, Copy } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import {
   apiJobLogs,
@@ -422,7 +419,7 @@ export function JobDetailDialog({
                 <Button
                   appearance="subtle"
                   size="small"
-                  icon={<Copy20Regular />}
+                  icon={<Copy className="w-4 h-4" />}
                   disabled={logs.length === 0}
                   onClick={() => {
                     const fullText = logs.map((l) => `${formatClock(l.ts_ms)} [${l.level}] ${l.text}`).join("\n");
@@ -474,7 +471,7 @@ export function JobDetailDialog({
             onRetry ? (
               <Button
                 appearance="primary"
-                icon={<ArrowClockwise20Regular />}
+                icon={<RotateCw className="w-4 h-4" />}
                 onClick={() => {
                   onRetry(job);
                   onClose();

@@ -11,7 +11,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { Copy20Regular } from "@fluentui/react-icons";
+import { Copy } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   ApiError,
@@ -380,7 +380,7 @@ export function LogsTab({
           <Tooltip content={copied ? t("logCopied") : t("logCopy")} relationship="description" withArrow>
             <Button
               size="small"
-              icon={<Copy20Regular />}
+              icon={<Copy className="w-4 h-4" />}
               disabled={visible.length === 0}
               onClick={handleCopyLogs}
             >

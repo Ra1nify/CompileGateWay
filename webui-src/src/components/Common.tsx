@@ -1,61 +1,16 @@
 import type { JSX, ReactNode } from "react";
-import {
-  Button,
-  Spinner,
-  Tag,
-  makeStyles,
-  mergeClasses,
-  shorthands,
-  tokens,
-} from "@fluentui/react-components";
-import { Dismiss12Regular } from "@fluentui/react-icons";
+import { Tag, Button } from "@fluentui/react-components";
+import { X } from "lucide-react";
 
 /** Centered loading indicator (used for page load / sign-in). */
-const useSpinnerStyles = makeStyles({
-  wrap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: "12px",
-    minHeight: "220px",
-    width: "100%",
-  },
-  label: {
-    color: tokens.colorNeutralForeground3,
-    fontSize: tokens.fontSizeBase200,
-  },
-});
-
 export function CenteredSpinner({ label }: { label: string }): JSX.Element {
-  const styles = useSpinnerStyles();
   return (
-    <div className={styles.wrap} role="status" aria-live="polite">
-      <Spinner size="medium" labelPosition="below" label={label} />
+    <div className="flex flex-col items-center justify-center gap-3 min-h-[220px] w-full" role="status" aria-live="polite">
+      <div className="w-8 h-8 rounded-full border-2 border-primary/20 border-t-primary animate-spin" />
+      <span className="text-xs text-text-muted font-medium">{label}</span>
     </div>
   );
 }
-
-/** Definition list: equivalent of the old dl.status (term column + value column). */
-const useDlStyles = makeStyles({
-  list: {
-    display: "grid",
-    gridTemplateColumns: "max-content minmax(0, 1fr)",
-    columnGap: "18px",
-    rowGap: "8px",
-    margin: 0,
-    fontSize: tokens.fontSizeBase300,
-  },
-  term: {
-    color: tokens.colorNeutralForeground3,
-    whiteSpace: "nowrap",
-  },
-  detail: {
-    margin: 0,
-    overflowWrap: "anywhere",
-    color: tokens.colorNeutralForeground1,
-  },
-});
 
 export interface DescriptionItem {
   term: string;
@@ -71,16 +26,12 @@ export function DescriptionList({
   items: DescriptionItem[];
   className?: string;
 }): JSX.Element {
-  const styles = useDlStyles();
   return (
-    <dl className={mergeClasses(styles.list, className)}>
+    <dl className={`grid grid-cols-1 sm:grid-cols-[max-content_minmax(0,1fr)] gap-x-6 gap-y-3.5 text-sm ${className || ""}`}>
       {items.map((item, index) => (
-        <div key={`${item.term}-${index}`} style={{ display: "contents" }}>
-          <dt className={styles.term}>{item.term}</dt>
-          <dd
-            className={styles.detail}
-            style={item.nowrap ? { whiteSpace: "nowrap" } : undefined}
-          >
+        <div key={`${item.term}-${index}`} className="contents">
+          <dt className="text-text-muted font-medium select-none text-xs sm:text-sm">{item.term}</dt>
+          <dd className={`text-text text-xs sm:text-sm ${item.nowrap ? "whitespace-nowrap" : "break-all"}`}>
             {item.detail}
           </dd>
         </div>
@@ -89,83 +40,26 @@ export function DescriptionList({
   );
 }
 
-/** One card (old .panel / .client-card). */
-const usePanelStyles = makeStyles({
-  panel: {
-    ...shorthands.border("1px", "solid", tokens.colorNeutralStroke2),
-    ...shorthands.borderRadius("12px"),
-    backgroundColor: tokens.colorNeutralBackground2,
-    ...shorthands.padding("18px", "20px"),
-    maxWidth: "720px",
-  },
-  flush: {
-    maxWidth: "1080px",
-    ...shorthands.padding("14px", "16px"),
-  },
-});
-
 export function Panel({
   children,
-  flush = false,
   className,
 }: {
   children: ReactNode;
-  flush?: boolean;
   className?: string;
 }): JSX.Element {
-  const styles = usePanelStyles();
   return (
-    <section className={mergeClasses(styles.panel, flush && styles.flush, className)}>
+    <div
+      className={`bg-card border border-border rounded-xl p-5 shadow-sm max-w-3xl ${
+        className || ""
+      }`}
+    >
       {children}
-    </section>
+    </div>
   );
 }
 
-/** Page title + subtitle. */
-const useHeadStyles = makeStyles({
-  head: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    columnGap: "14px",
-    rowGap: "6px",
-    flexWrap: "nowrap",
-    marginBottom: "18px",
-    minWidth: 0,
-  },
-  titles: {
-    minWidth: 0,
-    overflow: "hidden",
-  },
-  title: {
-    margin: 0,
-    fontSize: tokens.fontSizeBase500,
-    fontWeight: tokens.fontWeightSemibold,
-    color: tokens.colorNeutralForeground1,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  subtitle: {
-    margin: "2px 0 0",
-    fontSize: tokens.fontSizeBase200,
-    color: tokens.colorNeutralForeground3,
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-  },
-  actions: {
-    display: "flex",
-    alignItems: "center",
-    flexWrap: "nowrap",
-    flex: "0 0 auto",
-    columnGap: "8px",
-    marginLeft: "auto",
-  },
-});
-
 /**
- * Page head. Actions stay on one line (no wrap); long titles are ellipsized.
+ * Page head. Responsive: title & actions stack on mobile, horizontal on desktop.
  */
 export function PageHead({
   title,
@@ -176,36 +70,24 @@ export function PageHead({
   subtitle?: ReactNode;
   actions?: ReactNode;
 }): JSX.Element {
-  const styles = useHeadStyles();
   return (
-    <div className={styles.head}>
-      <div className={styles.titles}>
-        {title ? <h2 className={styles.title}>{title}</h2> : null}
-        {subtitle ? <p className={styles.subtitle}>{subtitle}</p> : null}
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-border/80">
+      <div className="min-w-0">
+        {title ? <h1 className="text-lg sm:text-xl font-bold tracking-tight text-text truncate">{title}</h1> : null}
+        {subtitle ? <p className="text-xs sm:text-sm text-text-muted mt-1 truncate">{subtitle}</p> : null}
       </div>
-      {actions ? <div className={styles.actions}>{actions}</div> : null}
+      {actions ? <div className="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">{actions}</div> : null}
     </div>
   );
 }
 
 /** Read-only tag row on an instance card. */
-const useTagStyles = makeStyles({
-  tags: {
-    display: "flex",
-    flexWrap: "wrap",
-    columnGap: "8px",
-    rowGap: "8px",
-    alignItems: "center",
-  },
-});
-
 export function TagRow({ tags }: { tags: string[] }): JSX.Element | null {
-  const styles = useTagStyles();
   if (!tags.length) {
     return null;
   }
   return (
-    <div className={styles.tags}>
+    <div className="flex flex-wrap gap-1.5 items-center">
       {tags.map((tag, index) => (
         <Tag key={`${tag}-${index}`} size="extra-small" appearance="brand" shape="rounded">
           {tag}
@@ -216,35 +98,8 @@ export function TagRow({ tags }: { tags: string[] }): JSX.Element | null {
 }
 
 /**
- * Removable tag. The dismiss (x) button sits at the top-right (old .tag .tag-x).
+ * Removable tag. The dismiss (x) button sits at the top-right.
  */
-const useEditorTagStyles = makeStyles({
-  holder: {
-    position: "relative",
-    display: "inline-flex",
-    alignItems: "center",
-    paddingRight: "4px",
-  },
-  dismiss: {
-    position: "absolute",
-    top: "-9px",
-    right: "-9px",
-    minWidth: "18px",
-    width: "18px",
-    height: "18px",
-    ...shorthands.padding(0),
-    ...shorthands.borderRadius("50%"),
-    backgroundColor: tokens.colorNeutralBackground1,
-    ...shorthands.border("1px", "solid", tokens.colorNeutralStroke1),
-    color: tokens.colorNeutralForeground3,
-    ":hover": {
-      color: tokens.colorPaletteRedForeground1,
-      ...shorthands.borderColor(tokens.colorPaletteRedBorder2),
-      backgroundColor: tokens.colorNeutralBackground1,
-    },
-  },
-});
-
 export function EditorTag({
   value,
   dismissLabel,
@@ -254,17 +109,25 @@ export function EditorTag({
   dismissLabel: string;
   onDismiss: () => void;
 }): JSX.Element {
-  const styles = useEditorTagStyles();
   return (
-    <span className={styles.holder}>
+    <span className="relative inline-flex items-center pr-1">
       <Tag size="extra-small" appearance="brand" shape="rounded">
         {value}
       </Tag>
       <Button
-        className={styles.dismiss}
+        style={{
+          position: "absolute",
+          top: "-9px",
+          right: "-9px",
+          minWidth: "18px",
+          width: "18px",
+          height: "18px",
+          padding: 0,
+          borderRadius: "50%",
+        }}
         appearance="subtle"
         size="small"
-        icon={<Dismiss12Regular />}
+        icon={<X className="w-3 h-3" />}
         aria-label={`${dismissLabel}: ${value}`}
         title={`${dismissLabel}: ${value}`}
         onClick={onDismiss}

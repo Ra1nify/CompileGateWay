@@ -14,6 +14,10 @@ import {
 import { useId, useState } from "react";
 
 const useStyles = makeStyles({
+  surface: {
+    maxWidth: "min(480px, 92vw)",
+    boxSizing: "border-box",
+  },
   body: {
     display: "flex",
     flexDirection: "column",
@@ -79,7 +83,7 @@ export function ConfirmDialog({
         }
       }}
     >
-      <DialogSurface aria-labelledby={titleId}>
+      <DialogSurface className={styles.surface} aria-labelledby={titleId}>
         <DialogBody>
           <DialogTitle id={titleId}>{title}</DialogTitle>
           <DialogContent className={styles.body}>

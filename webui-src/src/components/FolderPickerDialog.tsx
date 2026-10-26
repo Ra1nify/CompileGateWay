@@ -14,7 +14,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { ArrowUp20Regular, Folder20Regular, Home20Regular } from "@fluentui/react-icons";
+import { ArrowUp, Folder, Home } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ApiError, apiBrowse, type BrowseResult, type Status } from "../api";
 import { makeT } from "../i18n/strings";
@@ -22,7 +22,8 @@ import { makeT } from "../i18n/strings";
 const useStyles = makeStyles({
   surface: {
     maxWidth: "700px",
-    width: "700px",
+    width: "min(700px, 94vw)",
+    boxSizing: "border-box",
   },
   body: {
     display: "flex",
@@ -164,7 +165,7 @@ export function FolderPickerDialog({
               <Tooltip content={t("browseHome")} relationship="description" withArrow>
                 <Button
                   appearance="subtle"
-                  icon={<Home20Regular />}
+                  icon={<Home className="w-4 h-4" />}
                   aria-label={t("browseHome")}
                   disabled={!listing}
                   onClick={() => setPath(listing?.root ?? "")}
@@ -173,7 +174,7 @@ export function FolderPickerDialog({
               <Tooltip content={t("treeUp")} relationship="description" withArrow>
                 <Button
                   appearance="subtle"
-                  icon={<ArrowUp20Regular />}
+                  icon={<ArrowUp className="w-4 h-4" />}
                   aria-label={t("treeUp")}
                   disabled={!listing?.parent}
                   onClick={() => setPath(listing?.parent ?? "")}
@@ -202,7 +203,7 @@ export function FolderPickerDialog({
                     className={styles.name}
                     appearance="subtle"
                     size="small"
-                    icon={<Folder20Regular />}
+                    icon={<Folder className="w-4 h-4 text-sky-400" />}
                     onClick={() => setPath(entry.path)}
                   >
                     {entry.name}

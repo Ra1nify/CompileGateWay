@@ -1,6 +1,6 @@
 import type { JSX } from "react";
 import { Button, Input, makeStyles, tokens } from "@fluentui/react-components";
-import { Add16Regular } from "@fluentui/react-icons";
+import { Plus } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { EditorTag } from "./Common";
 
@@ -122,7 +122,7 @@ export function TagEditor({
           appearance="outline"
           shape="circular"
           size="small"
-          icon={<Add16Regular />}
+          icon={<Plus className="w-3.5 h-3.5" />}
           aria-label={addLabel}
           title={addLabel}
           onClick={addTag}

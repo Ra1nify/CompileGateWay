@@ -23,14 +23,14 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  Add20Regular,
-  ArrowDownload20Regular,
-  ArrowSync20Regular,
-  BranchFork20Regular,
-  Delete20Regular,
-  Edit20Regular,
-  Play20Regular,
-} from "@fluentui/react-icons";
+  Plus,
+  Download,
+  RotateCw,
+  GitFork,
+  Trash2,
+  Pencil,
+  Play,
+} from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   ApiError,
@@ -351,7 +351,7 @@ export function WorkflowsPage({
               <Tooltip content={t("restoreWorkflows", { n: missingTemplates.length })} relationship="description" withArrow>
                 <Button
                   appearance="subtle"
-                  icon={<ArrowDownload20Regular />}
+                  icon={<Download className="w-4 h-4" />}
                   onClick={() => void handleRestoreTemplates()}
                 >
                   {t("restoreWorkflows", { n: missingTemplates.length })}
@@ -361,7 +361,7 @@ export function WorkflowsPage({
             <Tooltip content={t("newWorkflow")} relationship="description" withArrow>
               <Button
                 appearance="primary"
-                icon={<Add20Regular />}
+                icon={<Plus className="w-4 h-4" />}
                 onClick={handleOpenNew}
               >
                 {t("newWorkflow")}
@@ -370,7 +370,7 @@ export function WorkflowsPage({
             <Tooltip content={t("refresh")} relationship="description" withArrow>
               <Button
                 appearance="subtle"
-                icon={<ArrowSync20Regular />}
+                icon={<RotateCw className="w-4 h-4" />}
                 onClick={() => { setSuccessText(null); void loadData(); }}
               />
             </Tooltip>
@@ -402,7 +402,7 @@ export function WorkflowsPage({
             <Card key={wf.id} className={styles.card}>
               <div className={styles.cardHeader}>
                 <div className={styles.cardTitleRow}>
-                  <BranchFork20Regular />
+                  <GitFork className="w-4 h-4 text-sky-400" />
                   <span className={styles.title}>{wf.name}</span>
                   <Badge appearance="outline" color="informative" size="small">
                     {wf.id}
@@ -433,7 +433,7 @@ export function WorkflowsPage({
                 <div className={styles.cardActions}>
                   <Button
                     appearance="primary"
-                    icon={<Play20Regular />}
+                    icon={<Play className="w-4 h-4" />}
                     disabled={!wf.valid || projects.length === 0}
                     onClick={() => setApplyingWorkflow(wf)}
                   >
@@ -442,14 +442,14 @@ export function WorkflowsPage({
                   <Tooltip content={t("edit")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Edit20Regular />}
+                      icon={<Pencil className="w-4 h-4" />}
                       onClick={() => void handleOpenEdit(wf.id)}
                     />
                   </Tooltip>
                   <Tooltip content={t("del")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Delete20Regular />}
+                      icon={<Trash2 className="w-4 h-4" />}
                       onClick={() => setDeletingId(wf.id)}
                     />
                   </Tooltip>

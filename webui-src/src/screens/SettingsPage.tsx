@@ -14,7 +14,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { Copy16Regular, Save20Regular } from "@fluentui/react-icons";
+import { Copy, Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -358,7 +358,7 @@ export function SettingsPage({
           <Tooltip content={t("save")} relationship="description" withArrow>
             <Button
               appearance="primary"
-              icon={<Save20Regular />}
+              icon={<Save className="w-4 h-4" />}
               aria-label={t("save")}
               disabled={busy}
               onClick={() => void save()}
@@ -447,7 +447,7 @@ export function SettingsPage({
               <Input value={config.mcp.endpoint} readOnly />
               <Tooltip content={t("mcpCopy")} relationship="description" withArrow>
                 <Button
-                  icon={<Copy16Regular />}
+                  icon={<Copy className="w-4 h-4" />}
                   aria-label={t("mcpCopy")}
                   onClick={() => void copyEndpoint()}
                 />
@@ -461,7 +461,7 @@ export function SettingsPage({
           <Tooltip content={t("save")} relationship="description" withArrow>
             <Button
               appearance="primary"
-              icon={<Save20Regular />}
+              icon={<Save className="w-4 h-4" />}
               aria-label={t("save")}
               disabled={mcpBusy}
               onClick={() => void saveMcp()}

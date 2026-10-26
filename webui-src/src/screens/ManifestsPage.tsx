@@ -21,14 +21,14 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  Add20Regular,
-  ArrowDownload20Regular,
-  ArrowSync20Regular,
-  Delete20Regular,
-  Edit20Regular,
-  Search20Regular,
-  TextGrammarWand20Regular,
-} from "@fluentui/react-icons";
+  Plus,
+  Download,
+  RotateCw,
+  Trash2,
+  Pencil,
+  Search,
+  Wand2,
+} from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import {
   ApiError,
@@ -177,7 +177,8 @@ const useStyles = makeStyles({
   },
   dialogSurface: {
     maxWidth: "760px",
-    width: "760px",
+    width: "min(760px, 94vw)",
+    boxSizing: "border-box",
   },
   mono: {
     fontFamily: tokens.fontFamilyMonospace,
@@ -472,7 +473,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
       <Tooltip content={t("manifestRefresh")} relationship="description" withArrow>
         <Button
           appearance="subtle"
-          icon={<ArrowSync20Regular />}
+          icon={<RotateCw className="w-4 h-4" />}
           aria-label={t("manifestRefresh")}
           disabled={busy}
           onClick={() => void refresh()}
@@ -482,7 +483,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
         <Tooltip content={t("presetReset")} relationship="description" withArrow>
           <Button
             appearance="subtle"
-            icon={<ArrowSync20Regular />}
+            icon={<RotateCw className="w-4 h-4" />}
             aria-label={t("presetReset")}
             disabled={busy}
             onClick={() => setPendingReset(true)}
@@ -492,7 +493,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
       <Tooltip content={t("manifestImport")} relationship="description" withArrow>
         <Button
           appearance="subtle"
-          icon={<Add20Regular />}
+          icon={<Plus className="w-4 h-4" />}
           aria-label={t("manifestImport")}
           disabled={busy}
           onClick={() => {
@@ -524,7 +525,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
         <Tooltip content={t("detectRun")} relationship="description" withArrow>
           <Button
             appearance="subtle"
-            icon={<Search20Regular />}
+            icon={<Search className="w-4 h-4" />}
             aria-label={t("detectRun")}
             disabled={detecting}
             onClick={() => void runDetect()}
@@ -594,7 +595,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
                   <Tooltip content={t("manifestEdit")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Edit20Regular />}
+                      icon={<Pencil className="w-4 h-4" />}
                       aria-label={t("manifestEdit")}
                       disabled={busy}
                       onClick={() => void openEditor(manifest)}
@@ -603,7 +604,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
                   <Tooltip content={t("manifestExport")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<ArrowDownload20Regular />}
+                      icon={<Download className="w-4 h-4" />}
                       aria-label={t("manifestExport")}
                       disabled={busy}
                       onClick={() => void exportManifest(manifest.id)}
@@ -612,7 +613,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
                   <Tooltip content={t("manifestDelete")} relationship="description" withArrow>
                     <Button
                       appearance="subtle"
-                      icon={<Delete20Regular />}
+                      icon={<Trash2 className="w-4 h-4" />}
                       aria-label={t("manifestDelete")}
                       disabled={busy}
                       style={{ color: tokens.colorPaletteRedForeground1 }}
@@ -708,7 +709,7 @@ export function ManifestsPage({ status }: { status: Status }): JSX.Element {
             <DialogActions>
               <Button
                 appearance="secondary"
-                icon={<TextGrammarWand20Regular />}
+                icon={<Wand2 className="w-4 h-4" />}
                 disabled={rawLoading}
                 onClick={formatRaw}
               >

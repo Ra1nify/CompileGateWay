@@ -19,7 +19,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { FolderOpen20Regular } from "@fluentui/react-icons";
+import { FolderOpen } from "lucide-react";
 import { useEffect, useId, useState } from "react";
 import {
   ApiError,
@@ -54,7 +54,8 @@ const useStyles = makeStyles({
   },
   surface: {
     maxWidth: "680px",
-    width: "680px",
+    width: "min(680px, 94vw)",
+    boxSizing: "border-box",
   },
   grid: {
     display: "flex",
@@ -424,7 +425,7 @@ export function TaskDialog({
             <Tooltip content={t("taskPickPathHint")} relationship="description" withArrow>
               <Button
                 appearance="subtle"
-                icon={<FolderOpen20Regular />}
+                icon={<FolderOpen className="w-4 h-4" />}
                 aria-label={t("taskPickPath")}
                 disabled={!projectId}
                 onClick={() => setPicking({ target, current: value })}
@@ -676,7 +677,7 @@ export function TaskDialog({
                       <Tooltip content={t("taskPickPathHint")} relationship="description" withArrow>
                         <Button
                           appearance="subtle"
-                          icon={<FolderOpen20Regular />}
+                          icon={<FolderOpen className="w-4 h-4" />}
                           aria-label={t("taskPickPath")}
                           disabled={!projectId}
                           onClick={() => setPicking({ target: index, current: source })}

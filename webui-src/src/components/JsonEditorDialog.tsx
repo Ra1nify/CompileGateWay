@@ -13,7 +13,7 @@ import {
   makeStyles,
   tokens,
 } from "@fluentui/react-components";
-import { Save20Regular } from "@fluentui/react-icons";
+import { Save } from "lucide-react";
 import { useEffect, useState } from "react";
 import { ApiError, type Status } from "../api";
 import { makeT } from "../i18n/strings";
@@ -120,7 +120,7 @@ export function JsonEditorDialog({
             </Button>
             <Button
               appearance="primary"
-              icon={<Save20Regular />}
+              icon={<Save className="w-4 h-4" />}
               disabled={busy}
               onClick={() => void save()}
             >

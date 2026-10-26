@@ -17,12 +17,12 @@ import {
   tokens,
 } from "@fluentui/react-components";
 import {
-  ArrowClockwise20Regular,
-  CheckmarkCircle20Regular,
-  Code20Regular,
-  Copy20Regular,
-  DismissCircle20Regular,
-} from "@fluentui/react-icons";
+  RotateCw,
+  CheckCircle2,
+  Code,
+  Copy,
+  XCircle,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   ApiError,
@@ -190,7 +190,7 @@ export function EnvTab({
         <Tooltip content={t("envDetect")} relationship="description" withArrow>
           <Button
             appearance="primary"
-            icon={<ArrowClockwise20Regular />}
+            icon={<RotateCw className="w-4 h-4" />}
             aria-label={t("envDetect")}
             disabled={busy}
             onClick={() => void detect()}
@@ -199,7 +199,7 @@ export function EnvTab({
         <Tooltip content={t("envScriptTitle")} relationship="description" withArrow>
           <Button
             appearance="subtle"
-            icon={<Code20Regular />}
+            icon={<Code className="w-4 h-4" />}
             aria-label={t("envScript")}
             onClick={() => void openScript()}
           >
@@ -266,7 +266,7 @@ export function EnvTab({
                   color={report.licenseOk ? "success" : "warning"}
                   size="small"
                   icon={
-                    report.licenseOk ? <CheckmarkCircle20Regular /> : <DismissCircle20Regular />
+                    report.licenseOk ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <XCircle className="w-3.5 h-3.5 text-amber-400" />
                   }
                 >
                   {report.licenseOk ? t("envLicenseOk") : t("envLicenseMissing")}
@@ -358,7 +358,7 @@ export function EnvTab({
             <DialogActions>
               <Button
                 appearance="subtle"
-                icon={<Copy20Regular />}
+                icon={<Copy className="w-4 h-4" />}
                 disabled={!scriptContent || loadingScript}
                 onClick={() => {
                   if (scriptContent) {
